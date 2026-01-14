@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     [Header("Initial Player Stats")]
     // Initial Player Stats
     [SerializeField] private float initialSpeed = 5;
+    [SerializeField] private int initialHealth = 100;
 
     // Private variables
     private PlayerStats stats;
@@ -18,9 +19,8 @@ public class PlayerController : MonoBehaviour
     {
         // Initialize
         rBody = GetComponent<Rigidbody2D>();
-       
-        stats = new PlayerStats();
-        stats.MoveSpeed = initialSpeed;
+
+        stats = new PlayerStats(initialSpeed, initialHealth);
     }
 
     void OnMove(InputValue value)
@@ -29,14 +29,22 @@ public class PlayerController : MonoBehaviour
     }
 
     void FixedUpdate()
-    { 
+    {
         ApplyMovement();
     }
 
-    void ApplyMovement()
+    private void ApplyMovement()
     {
         float velocityX = moveInput.x * stats.MoveSpeed;
 
         rBody.linearVelocity = new Vector2(velocityX, rBody.linearVelocity.y);
+    }
+
+    public void TakeDamage(int damageAmount)
+    {
+        stats.CurrentHealth -= damageAmount;
+        // stats.CurrentHealth = stats.CurrentHealth - damageAmount;
+
+        Debug.Log("Player took damage");
     }
 }
