@@ -5,10 +5,11 @@ public class Character : MonoBehaviour
     [Header(" Character Data")]
     [SerializeField] private float moveSpeed = 5.0f;
     [SerializeField] private int maxHealth = 100;
-    private int currentHealth;
-    private bool isDead = false;
 
+    protected int currentHealth;
     protected Animator anim;
+
+    private bool isDead = false;
 
     public float MoveSpeed
     {
@@ -34,6 +35,8 @@ public class Character : MonoBehaviour
 
     public virtual void TakeDamage(int amount)
     {
+        if(IsDead) return;
+
         CurrentHealth -= amount;
         Debug.Log($"{gameObject.name} HP is now: {CurrentHealth}");
 

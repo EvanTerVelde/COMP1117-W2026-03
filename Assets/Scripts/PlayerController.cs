@@ -6,9 +6,18 @@ public class PlayerController : Character
 {
     [Header("Movement Settings")]
     [SerializeField] private float jumpForce = 12f;
+    [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius = 0.2f;
 
     private Rigidbody2D rBody;
     private PlayerInputHandler input;
+    private bool isGrounded;
+
+    public bool IsGrounded
+    {
+        get { return isGrounded; }
+    }
 
     protected override void Awake()
     {
@@ -17,8 +26,16 @@ public class PlayerController : Character
         input = GetComponent<PlayerInputHandler>();
     }
 
+    private void Update()
+    {
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+        Debug.Log(isGrounded);
+    }
+
     private void FixedUpdate()
     {
+        if (IsDead) return;
+
         HandleMovement();
         HandleJump();
         HandleBetterFalling();
@@ -36,7 +53,7 @@ public class PlayerController : Character
     private void HandleJump()
     {
         // Only jump if the input handler's property is currently true
-        if (input.JumpTriggered)
+        if (input.JumpTriggered && isGrounded)
         {
             ApplyJumpForce();
 
@@ -60,14 +77,14 @@ public class PlayerController : Character
 
         rBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 
-        Debug.Log("Player Jumped!");
+        // Debug.Log("Player Jumped!");
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Character victim = collision.GetComponent<Character>();
 
-        if (victim != null)
+        if (victim != null && !victim.IsDead)
         {
             // Check if player is above the enemy
             if (transform.position.y > collision.transform.position.y + 0.2f)
