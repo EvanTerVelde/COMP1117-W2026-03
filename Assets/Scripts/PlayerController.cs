@@ -1,50 +1,84 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+[RequireComponent(typeof(PlayerInputHandler), typeof(Rigidbody2D))]
+public class PlayerController : Character
 {
-    [Header("Initial Player Stats")]
-    // Initial Player Stats
-    [SerializeField] private float initialSpeed = 5;
-    [SerializeField] private int initialHealth = 100;
+    [Header("Movement Settings")]
+    [SerializeField] private float jumpForce = 12f;
 
-    // Private variables
-    private PlayerStats stats;
-    private Vector2 moveInput;
-
-    // Components
     private Rigidbody2D rBody;
+    private PlayerInputHandler input;
 
-    void Awake()
+    protected override void Awake()
     {
-        // Initialize
+        base.Awake();
         rBody = GetComponent<Rigidbody2D>();
-
-        stats = new PlayerStats(initialSpeed, initialHealth);
+        input = GetComponent<PlayerInputHandler>();
     }
 
-    void OnMove(InputValue value)
+    private void FixedUpdate()
     {
-        moveInput = value.Get<Vector2>();
+        HandleMovement();
+        HandleJump();
+        HandleBetterFalling();
     }
 
-    void FixedUpdate()
+    private void HandleMovement()
     {
-        ApplyMovement();
+        // We get MoveInput from the modular InputHandler sibling
+        // We get MoveSpeed from the Character parent class
+        float horizontalVelocity = input.MoveInput.x * MoveSpeed;
+
+        rBody.linearVelocity = new Vector2(horizontalVelocity, rBody.linearVelocity.y);
     }
 
-    private void ApplyMovement()
+    private void HandleJump()
     {
-        float velocityX = moveInput.x * stats.MoveSpeed;
+        // Only jump if the input handler's property is currently true
+        if (input.JumpTriggered)
+        {
+            ApplyJumpForce();
 
-        rBody.linearVelocity = new Vector2(velocityX, rBody.linearVelocity.y);
+            // We must "consume" the jump so we don't apply force every frame
+            input.UseJump();
+        }
     }
 
-    public void TakeDamage(int damageAmount)
+    private void HandleBetterFalling()
     {
-        stats.CurrentHealth -= damageAmount;
-        // stats.CurrentHealth = stats.CurrentHealth - damageAmount;
+        if(rBody.linearVelocity.y < 0)
+        {
+            rBody.linearVelocity += Vector2.up * Physics2D.gravity.y * 2f * Time.deltaTime;
+        }
+    }
 
-        Debug.Log("Player took damage");
+    private void ApplyJumpForce()
+    {
+        // Reset vertical velocity first to ensure consistent jump height
+        rBody.linearVelocity = new Vector2(rBody.linearVelocity.x, 0);
+
+        rBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+
+        Debug.Log("Player Jumped!");
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Character victim = collision.GetComponent<Character>();
+
+        if (victim != null)
+        {
+            // Check if player is above the enemy
+            if (transform.position.y > collision.transform.position.y + 0.2f)
+            {
+                victim.TakeDamage(100);
+                ApplyJumpForce();
+            }
+            else
+            {
+                this.TakeDamage(10);
+            }
+        }
     }
 }
