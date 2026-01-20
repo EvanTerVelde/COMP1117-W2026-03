@@ -44,15 +44,32 @@ public class Enemy : Character
 
     protected override void Die()
     {
-        if(anim != null)
+        // 1. Prevent multiple calls to Die
+        if (IsDead) return;
+
+        // 2. Call the base to set IsDead = true
+        base.Die();
+
+        // 3. Stop Physics Jitter
+        Rigidbody2D rBody = GetComponent<Rigidbody2D>();
+        if (rBody != null)
+        {
+            rBody.linearVelocity = Vector2.zero;
+            rBody.bodyType = RigidbodyType2D.Kinematic; // Stops all physics forces
+        }
+
+        // 4. Stop Logic Jitter
+        // This stops the Update() loop from running HandleMovement/Flipping
+        this.enabled = false;
+
+        // 5. Play Animation
+        if (anim != null)
         {
             anim.SetTrigger("Death");
         }
 
-        patrolDistance = 0;
+        // 6. Cleanup
         GetComponent<Collider2D>().enabled = false;
-
-        Debug.Log($"{gameObject.name} has died");
         Destroy(gameObject, 0.5f);
     }
 }
