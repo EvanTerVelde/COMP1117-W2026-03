@@ -333,6 +333,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &552432842 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1130832025903191419, guid: 2c8a345aedc80cf47bdff9819eddb759, type: 3}
+  m_PrefabInstance: {fileID: 7227865685576764432}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &552432848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552432842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57db27aee129445479c9ace04265cdec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageAmount: 1
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -7072,6 +7090,14 @@ PrefabInstance:
       propertyPath: groundCheck
       value: 
       objectReference: {fileID: 1662385926}
+    - target: {fileID: 5497493851762786267, guid: 7f42f5c054cc0fa4dadfa2c6b8601e51, type: 3}
+      propertyPath: stats.lives
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5497493851762786267, guid: 7f42f5c054cc0fa4dadfa2c6b8601e51, type: 3}
+      propertyPath: stats.maxHP
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7866048626726982674, guid: 7f42f5c054cc0fa4dadfa2c6b8601e51, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.13
@@ -7196,11 +7222,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7244753252883669375, guid: 2c8a345aedc80cf47bdff9819eddb759, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.08
+      value: 4.96
       objectReference: {fileID: 0}
     - target: {fileID: 7244753252883669375, guid: 2c8a345aedc80cf47bdff9819eddb759, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.11
+      value: -1.47
       objectReference: {fileID: 0}
     - target: {fileID: 7244753252883669375, guid: 2c8a345aedc80cf47bdff9819eddb759, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7241,7 +7267,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1130832025903191419, guid: 2c8a345aedc80cf47bdff9819eddb759, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 552432848}
   m_SourcePrefab: {fileID: 100100000, guid: 2c8a345aedc80cf47bdff9819eddb759, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
