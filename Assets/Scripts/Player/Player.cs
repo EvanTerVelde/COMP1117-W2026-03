@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInputHandler), typeof(Rigidbody2D))]
-public class PlayerController : Character
+public class Player : Character
 {
     [Header("Player Stats")]
     [SerializeField] private PlayerStats stats;
@@ -56,7 +56,7 @@ public class PlayerController : Character
         // Animation parameters
         if (!isInvisible && !IsDead)
         {
-            anim.SetFloat("xVelocity", rBody.linearVelocity.x);
+            anim.SetFloat("xVelocity", Mathf.Abs(rBody.linearVelocity.x));
             anim.SetBool("isGrounded", isGrounded);
             anim.SetFloat("yVelocity", rBody.linearVelocity.y);
         }

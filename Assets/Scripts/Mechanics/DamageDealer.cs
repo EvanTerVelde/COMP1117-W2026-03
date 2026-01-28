@@ -6,8 +6,8 @@ public class DamageDealer : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Check if the thing we hit has a PlayerController
-        PlayerController player = collision.gameObject.GetComponent<PlayerController>();
+        // Check if the thing we hit has a Player
+        Player player = collision.gameObject.GetComponent<Player>();
 
         if (player != null)
         {
