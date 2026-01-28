@@ -47,6 +47,8 @@ public class PlayerController : Character
 
     private void Update()
     {
+        if (IsDead) return;
+
         // Perform my ground check
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         Debug.Log(isGrounded);
@@ -54,7 +56,7 @@ public class PlayerController : Character
         // Animation parameters
         if (!isInvisible && !IsDead)
         {
-            anim.SetFloat("xVelocity", Mathf.Abs(input.MoveInput.x));
+            anim.SetFloat("xVelocity", rBody.linearVelocity.x);
             anim.SetBool("isGrounded", isGrounded);
             anim.SetFloat("yVelocity", rBody.linearVelocity.y);
         }
@@ -124,7 +126,6 @@ public class PlayerController : Character
         // If still alive after hit, start iFrames
         if(CurrentHealth > 0)
         {
-            anim.SetTrigger("Hurt");
             StartCoroutine(IFrameRoutine());
         }
     }
@@ -133,6 +134,7 @@ public class PlayerController : Character
     {
         isInvisible = true;
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        Color originalColor = sr.color;
 
         float timer = 0f;
 
@@ -140,12 +142,15 @@ public class PlayerController : Character
         {
             sr.enabled = !sr.enabled;
 
+            sr.color = sr.enabled ? new Color(1f, 0.4f, 0.4f) : originalColor;
+
             // Blink every 0.1seconds
             yield return new WaitForSeconds(0.1f);
             timer += 0.1f;
         }
 
         sr.enabled = true;
+        sr.color = originalColor;
         isInvisible = false;
     }
 
@@ -153,6 +158,9 @@ public class PlayerController : Character
     {
         StopAllCoroutines();
         isInvisible = false;
+
+        // Trigger the animation to die here
+        anim.SetTrigger("Hurt");
 
         base.Die();
 
