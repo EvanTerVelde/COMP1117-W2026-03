@@ -38,4 +38,9 @@ public class Enemy : Character
             transform.localScale = new Vector3(-1, 1, 1);
         }
     }
+
+    public override void Die()
+    {
+        throw new System.NotImplementedException();
+    }
 }

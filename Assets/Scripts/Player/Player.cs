@@ -15,6 +15,7 @@ public class Player : Character
     private Rigidbody2D rBody;          // Used to apply a force to move or jump
     private PlayerInputHandler input;   // Reads the input
     private bool isGrounded;            // Holds the result of the ground check operation
+    private float currentSpeedModifier = 1f;
 
     /*
      * TO-DO: Add isGrounded property to help trigger animation
@@ -32,7 +33,7 @@ public class Player : Character
     { 
         // Perform my ground check
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        Debug.Log(isGrounded);
+        // Debug.Log(isGrounded);
 
         anim.SetFloat("xVelocity", Mathf.Abs(rBody.linearVelocity.x));
 
@@ -65,9 +66,12 @@ public class Player : Character
     {
         // We get MoveInput from InputHandler
         // We get MoveSpeed from our Parent class (Character)
-        float horizontalVelocity = input.MoveInput.x * MoveSpeed;
+        float horizontalVelocity = input.MoveInput.x * MoveSpeed * currentSpeedModifier;
 
         rBody.linearVelocity = new Vector2(horizontalVelocity, rBody.linearVelocity.y);
+
+        // Reset modifier every frame so it only applies when inside the zone
+        currentSpeedModifier = 1f;
     }
 
     private void HandleJump()
@@ -88,5 +92,20 @@ public class Player : Character
         rBody.linearVelocity = new Vector2(rBody.linearVelocity.x, 0);
 
         rBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
+
+    public void ApplySpeedModifier(float modifier)
+    {
+        currentSpeedModifier = modifier;
+    }
+
+    public override void Die()
+    {
+        // Mark as dead so movement stops
+        // Note: You may need to change 'isDead'
+        isDead = true;
+
+        Debug.Log("The player has died!");
+        // anim.SetTrigger("Death");       
     }
 }

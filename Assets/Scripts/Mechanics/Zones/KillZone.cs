@@ -6,6 +6,6 @@ public class KillZone : Zone
     {
         player.Die();
 
-        Debug.Log("Player fall into the abuss!");
+        Debug.Log("Player fall into the abyss!");
     }
 }
