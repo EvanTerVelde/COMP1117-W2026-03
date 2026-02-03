@@ -41,6 +41,7 @@ public class Enemy : Character
 
     public override void Die()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("The enemy has been defeated");
+        Destroy(gameObject);
     }
 }
