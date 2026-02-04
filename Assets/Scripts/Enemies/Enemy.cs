@@ -38,4 +38,15 @@ public class Enemy : Character
             transform.localScale = new Vector3(-1, 1, 1);
         }
     }
+
+    public override void Die()
+    {
+        Debug.Log("Enemy is dead");
+
+        // ENEMY DEATH LOGIC!
+        // ==================
+        // Award points / loot to the player
+        // Player death animation
+        // Destroy the enemy
+    }
 }

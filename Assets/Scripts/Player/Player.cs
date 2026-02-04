@@ -15,6 +15,7 @@ public class Player : Character
     private Rigidbody2D rBody;          // Used to apply a force to move or jump
     private PlayerInputHandler input;   // Reads the input
     private bool isGrounded;            // Holds the result of the ground check operation
+    private float currentSpeedModifier = 1f;
 
     /*
      * TO-DO: Add isGrounded property to help trigger animation
@@ -41,7 +42,7 @@ public class Player : Character
         anim.SetFloat("yVelocity", rBody.linearVelocity.y);
 
         // Handle sprite flipping
-        if(input.MoveInput.x != 0)
+        if(input.MoveInput.x != 0 && !isDead)
         {
             transform.localScale = new Vector3(Mathf.Sign(input.MoveInput.x), 1, 1);
         }
@@ -65,9 +66,11 @@ public class Player : Character
     {
         // We get MoveInput from InputHandler
         // We get MoveSpeed from our Parent class (Character)
-        float horizontalVelocity = input.MoveInput.x * MoveSpeed;
+        float horizontalVelocity = input.MoveInput.x * MoveSpeed * currentSpeedModifier;
 
         rBody.linearVelocity = new Vector2(horizontalVelocity, rBody.linearVelocity.y);
+
+        currentSpeedModifier = 1f;
     }
 
     private void HandleJump()
@@ -88,5 +91,23 @@ public class Player : Character
         rBody.linearVelocity = new Vector2(rBody.linearVelocity.x, 0);
 
         rBody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+    }
+
+    public void ApplySpeedModifier(float speedModifier)
+    {
+        currentSpeedModifier = speedModifier;
+    }
+
+    public override void Die()
+    {
+        isDead = true;
+        Debug.Log("Player has died");
+
+        // PLAYER DEATH LOGIC!
+        // ===================
+        // Add player specific death logic
+        // Set death animation
+        // Trigger death UI
+        // Initiate level reset logic
     }
 }
