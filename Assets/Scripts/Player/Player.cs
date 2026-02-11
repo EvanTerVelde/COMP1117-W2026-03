@@ -33,7 +33,7 @@ public class Player : Character
     { 
         // Perform my ground check
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        Debug.Log(isGrounded);
+        // Debug.Log(isGrounded);
 
         anim.SetFloat("xVelocity", Mathf.Abs(rBody.linearVelocity.x));
 
