@@ -10041,8 +10041,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gemPrefab: {fileID: 249558176414720728, guid: b29601ace284df947afc6df71605abec, type: 3}
-  gemCount: 100
-  launchForce: 50
+  gemCount: 20
+  launchForce: 5
   openChestSprite: {fileID: -5627866836883545433, guid: bc7bf501d77351e4c968a6269b259992, type: 3}
 --- !u!1 &1848621246
 GameObject:
