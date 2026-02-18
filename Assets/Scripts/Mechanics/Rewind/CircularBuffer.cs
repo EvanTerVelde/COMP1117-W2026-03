@@ -1,22 +1,22 @@
 using System.Collections.Generic;
 
-public class CircularBuffer
+public class CircularBuffer<T> //generic circular buffer
 {
     // collection itself
-    private List<int> buffer;
+    private List<T> buffer;
     // Capacity
     private int capacity;
 
     public CircularBuffer(int capacity)
     {
-        buffer = new List <int>(capacity);
+        buffer = new List <T>(capacity);
         this.capacity = capacity;
     }
 
     public int Count => buffer.Count;
 
 
-    public void Push(int item)
+    public void Push(T item)
     {
         // check if my buffer is at or above capacity
         if (buffer.Count >= capacity)
@@ -26,12 +26,12 @@ public class CircularBuffer
         buffer.Add(item);
     }
 
-    public int Pop()
+    public T Pop()
     {
-        if (buffer.Count == 0) return -1;
+        if (buffer.Count == 0) return default(T);
 
         int lastIndex = buffer.Count - 1;
-        int item = buffer[lastIndex];
+        T item = buffer[lastIndex];
         buffer.RemoveAt(lastIndex);
 
         return item;
